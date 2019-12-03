@@ -4,13 +4,15 @@ import org.apache.kafka.clients.producer._
 
 object Producer {
   def main(args: Array[String]): Unit = {
+    print("bootstrap.servers: ")
+    val servers = scala.io.StdIn.readLine()
     println("Start producing random requests...")
-    writeToKafka("currency_requests")
+    writeToKafka("currency_requests", servers)
   }
 
-  def writeToKafka(topic: String): Unit = {
+  def writeToKafka(topic: String, servers: String): Unit = {
     val props = new Properties()
-    props.put("bootstrap.servers", "localhost:9092")
+    props.put("bootstrap.servers", servers)
     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
     props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
     val producer = new KafkaProducer[String, String](props)
